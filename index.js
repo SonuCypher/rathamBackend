@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const studentRoute = require('./routes/student')
 
 
 
@@ -12,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-app.use("/api/students",)
+app.use("/api/students",studentRoute)
 
 
 app.listen(3000,()=>{
