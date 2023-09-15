@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const studentRoute = require('./routes/student')
+const deanRoute = require('./routes/dean')
 
 
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use("/api/students",studentRoute)
+app.use("/api/dean",deanRoute)
 
 
 app.listen(3000,()=>{

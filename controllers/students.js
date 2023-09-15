@@ -11,15 +11,18 @@ module.exports.signIn = async(req,res) =>{
         if (studentExist) {
             const validPassword = await bcrypt.compare(user.password, studentExist.password)
             if (validPassword) {
-                const token = jwt.sign({username:studentExist.studentId,id:studentExist._id}, SECRETKEY);
+                const token = jwt.sign({studentId:studentExist.studentId}, SECRETKEY);
                 res.json({token})
             } else {
                 res.json({error:"invalid password or username"})
             }
         } else {
             const password = await bcrypt.hash(user.password,12)
+            const token = jwt.sign({studentId:user.studentId},SECRETKEY)
             const newUser = await new Students({...user, password:password})
             await newUser.save()
+            res.json({token})
+
             
         }
     } catch (error) {
