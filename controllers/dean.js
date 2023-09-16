@@ -37,13 +37,20 @@ module.exports.signIn = async(req,res) =>{
 module.exports.CreateSession = async(req,res)=>{
     const {id}=req.params
     const {day,datetime}=req.body
+    const components = datetime.split(',')
+    const Year = parseInt(components[0]);
+    const Month = parseInt(components[1]) - 1; 
+    const Day = parseInt(components[2])+1;
+
+    const startTime= new Date(Year,Month,Day)
+    console.log("startTime",startTime)
     try {
         const dean = await Dean.findById(id)
         if (dean) {
             const newSession = await new FreeSession({
                 deanId:dean.deanId,
                 day,
-                startTime:new Date(datetime)
+                startTime:startTime
             })
             await newSession.save()
             res.json(newSession)
@@ -56,4 +63,32 @@ module.exports.CreateSession = async(req,res)=>{
     }
 }
 
+module.exports.getPendingSession = async(req, res) => {
+    const {id} = req.params
+    const currentDate = new Date();
+    try {
+        const dean = await Dean.findById(id)
+        if (dean) {
+            const pendingSession = await FreeSession.find({
+                deanId: dean.deanId,
+                booked: true,
+                startTime: { $gt: currentDate }
+            })
+            res.json(pendingSession)
+
+        } else {
+            res.json("user not found")
+        }
+    } catch (error) {
+        res.json(error.message)
+        console.log(error)
+    }
+}
+
 // new Date(datetime)
+    // const Hour = parseInt(components[3]);
+    // console.log("datetime",datetime)
+    // console.log("year",Year)
+    // console.log("month",Month)
+    // console.log("day",Day)
+    // console.log("hour",Hour)
