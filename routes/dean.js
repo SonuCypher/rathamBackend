@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/signin',signIn)
 router.post('/createsession/:id',DeanAuth,CreateSession)
-router.get('/pendingsession/:id', getPendingSession)
+router.get('/pendingsession/:id', DeanAuth,getPendingSession)
 
 module.exports = router

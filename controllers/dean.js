@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { Dean } = require('../models/dean')
 const { FreeSession } = require('../models/freeSession')
-const SECRETKEY = "JWTSECRET"
+const SECRETKEY = "JWTSECRET"// should be stored in .env file
 
 
 
@@ -43,7 +43,6 @@ module.exports.CreateSession = async(req,res)=>{
     const Day = parseInt(components[2])+1;
 
     const startTime= new Date(Year,Month,Day)
-    console.log("startTime",startTime)
     try {
         const dean = await Dean.findById(id)
         if (dean) {
@@ -85,10 +84,3 @@ module.exports.getPendingSession = async(req, res) => {
     }
 }
 
-// new Date(datetime)
-    // const Hour = parseInt(components[3]);
-    // console.log("datetime",datetime)
-    // console.log("year",Year)
-    // console.log("month",Month)
-    // console.log("day",Day)
-    // console.log("hour",Hour)
